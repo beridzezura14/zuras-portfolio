@@ -2,25 +2,173 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111114;
+  --accent: #365BFF;
+  --accent-light: #DCE3FF;
+  --accent-hover: #2948d6;
+  --accent-ring: #9dacff;
+  --accent-soft: #f0f3ff;
+  --accent-subtle: #f7f9ff;
+  --accent-surface: #f8f9ff;
+  --accent-border: #e0e5f0;
+  --accent-shadow: rgba(30, 55, 140, 0.18);
+  --secondary-text: #66666e;
+  --grid-color: #e8e8ed;
+  --border-color: #e5e5e5;
+  --surface-muted: #fafafa;
+  --text-strong: #55555d;
+  --text-muted: #777780;
+  --accent-on: #ffffff;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+/* Shared palettes apply to every route, including project detail pages. */
+:root[data-accent="purple"] {
+  --accent: #b875f5;
+  --accent-light: #d9b5ff;
+  --accent-hover: #a65deb;
+  --accent-ring: #c9a0ff;
+  --accent-soft: #f7f0ff;
+  --accent-subtle: #faf7ff;
+  --accent-surface: #faf8fc;
+  --accent-border: #e5e0e9;
+  --accent-shadow: rgba(70, 35, 100, 0.18);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root[data-accent="orange"] {
+  --accent: #ed7014;
+  --accent-light: #ffe0c2;
+  --accent-hover: #c95207;
+  --accent-ring: #f6ad70;
+  --accent-soft: #fff2e8;
+  --accent-subtle: #fff8f2;
+  --accent-surface: #fffbf7;
+  --accent-border: #f0e0d2;
+  --accent-shadow: rgba(140, 65, 20, 0.18);
+}
+
+:root[data-accent="black"] {
+  --accent: #111114;
+  --accent-light: #e0e0e5;
+  --accent-hover: #333338;
+  --accent-ring: #a1a1aa;
+  --accent-soft: #f2f2f4;
+  --accent-subtle: #f7f7f8;
+  --accent-surface: #fafafa;
+  --accent-border: #e0e0e5;
+  --accent-shadow: rgba(17, 17, 20, 0.18);
+}
+
+/* Theme surfaces and contrast remain independent of the chosen accent palette. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #101115;
+  --foreground: #f1f2f6;
+  --secondary-text: #a9adbb;
+  --text-strong: #c4c8d3;
+  --text-muted: #9298a8;
+  --surface-muted: #1c1e26;
+  --grid-color: #20232d;
+  --border-color: #2c303d;
+  --accent-on: #111114;
+  --accent-light: color-mix(in srgb, var(--accent) 35%, #1b1d26);
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, #15171c);
+  --accent-subtle: color-mix(in srgb, var(--accent) 5%, #15171c);
+  --accent-surface: color-mix(in srgb, var(--accent) 4%, #13151a);
+  --accent-border: color-mix(in srgb, var(--accent) 22%, #2c303d);
+}
+
+:root[data-theme="dark"][data-accent="blue"] {
+  --accent: #8298ff;
+  --accent-hover: #a0b1ff;
+}
+
+:root[data-theme="dark"][data-accent="black"] {
+  --accent: #ffffff;
+  --accent-hover: #c1c5d0;
+  --accent-ring: #a1a1aa;
+  --accent-on: #111114;
+}
+
+/* Neon lime replaces the legacy green selection. */
+:root[data-theme="dark"][data-accent="lime"] {
+  --accent: #ccff00;
+  --accent-hover: #ddff66;
+  --accent-ring: #ccff00;
+  --accent-shadow: rgba(204, 255, 0, 0.18);
+}
+
+html {
+  /* Clip decorative overflow at the viewport, preserving vertical scrolling. */
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  scrollbar-gutter: stable;
+}
+
+/* Section padding already provides space above each anchor's visible content. */
+#about,
+#projects,
+#contact {
+  scroll-margin-top: -6rem;
+}
+
+@media (min-width: 768px) {
+  #about,
+  #projects,
+  #contact {
+    scroll-margin-top: -8rem;
   }
 }
 
 body {
+  margin: 0;
+  isolation: isolate;
+  overflow-x: clip;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--accent-light);
+  color: var(--foreground);
+}
+
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  transform: translateY(-160%);
+  border-radius: 8px;
+  background: #111114;
+  padding: 12px 20px;
+  color: white;
+}
+.skip-link:focus { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Pause offscreen orbit animations through the section's visibility state. */
+.decoration-orbit {
+  animation: decoration-orbit 90s linear infinite;
+}
+
+@keyframes decoration-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
