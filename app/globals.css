@@ -154,6 +154,30 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 }
 .skip-link:focus { transform: translateY(0); }
 
+body:has(#mobile-menu[open]) { overflow: hidden; }
+
+.mobile-menu-panel {
+  transform: translateX(100%);
+  transition: transform 220ms ease-in;
+}
+
+.mobile-menu-shade {
+  opacity: 0;
+  transition: opacity 220ms ease-in;
+}
+
+#mobile-menu [data-state="open"] .mobile-menu-panel {
+  transform: translateX(0);
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-duration: 280ms;
+}
+
+#mobile-menu [data-state="open"] .mobile-menu-shade {
+  opacity: 1;
+  transition-duration: 280ms;
+  transition-timing-function: ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
